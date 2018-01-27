@@ -36,6 +36,7 @@
                      @{@"key": @"togglePercent", @"label": @"Toggle Percent"},
                      @{@"key": @"toggleHole", @"label": @"Toggle Hole"},
                      @{@"key": @"toggleIcons", @"label": @"Toggle Icons"},
+                     @{@"key": @"toggleLabelsMinimumAngle", @"label": @"Toggle Labels Minimum Angle"},
                      @{@"key": @"animateX", @"label": @"Animate X"},
                      @{@"key": @"animateY", @"label": @"Animate Y"},
                      @{@"key": @"animateXY", @"label": @"Animate XY"},
@@ -48,6 +49,7 @@
     [self setupPieChartView:_chartView];
     
     _chartView.delegate = self;
+    _chartView.drawSliceTextMinimumAngle = 20;
     
     ChartLegend *l = _chartView.legend;
     l.horizontalAlignment = ChartLegendHorizontalAlignmentRight;
@@ -59,7 +61,7 @@
     l.yOffset = 0.0;
     
     // entry label styling
-    _chartView.entryLabelColor = UIColor.whiteColor;
+    _chartView.entryLabelColor = UIColor.blackColor;
     _chartView.entryLabelFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:12.f];
     
     _sliderX.value = 4.0;
@@ -125,7 +127,7 @@
     pFormatter.percentSymbol = @" %";
     [data setValueFormatter:[[ChartDefaultValueFormatter alloc] initWithFormatter:pFormatter]];
     [data setValueFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:11.f]];
-    [data setValueTextColor:UIColor.whiteColor];
+    [data setValueTextColor:UIColor.blackColor];
     
     _chartView.data = data;
     [_chartView highlightValues:nil];
@@ -155,6 +157,12 @@
         
         [_chartView setNeedsDisplay];
         return;
+    }
+    
+    if ([key isEqualToString:@"toggleLabelsMinimumAngle"])
+    {
+        CGFloat newMinimum = _chartView.drawSliceTextMinimumAngle == 20.0 ? 0.0 : 20.0;
+        _chartView.drawSliceTextMinimumAngle = newMinimum;
     }
     
     if ([key isEqualToString:@"drawCenter"])
